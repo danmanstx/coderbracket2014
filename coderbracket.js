@@ -20,7 +20,7 @@ function (game, team1, team2) {
                       [  22.8, 10.9,  8.7,  2.2,  2.2,  2.2,  0.0,  1.1,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, 0.0, 0.0],
                       [  14.1,  4.3,  3.3,  1.1,  0.0,  1.1,  0.0,  1.1,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, 0.0, 0.0]];
 
-  // set teams historic chance to win as a base line at 10%
+  // set teams historic chance to win as a base line at 35% chance to win
   var team1Chance = chanceToWin[5-game.round][team1.seed-1] * rand1 * .35 / 100;
   var team2Chance = chanceToWin[5-game.round][team2.seed-1] * rand2 * .35 / 100;
 
@@ -38,17 +38,17 @@ function (game, team1, team2) {
 
   // CALCULATE THE TEAMS BIG FOUR
   // OFFENSE
-  // set teams effective shooting percentage    counts for (40%)
+  // set teams effective shooting percentage    counts for (30%)
   var team1effShootingPercentage = ( ( 0.5 * team1.threes_made + team1.field_goals_made ) / team1.field_goals_attempted );
   var team2effShootingPercentage = ( ( 0.5 * team2.threes_made + team2.field_goals_made ) / team2.field_goals_attempted );
   // set teams free throw made per possession   counts for (20%)
   // https://harvardsportsanalysis.wordpress.com/2011/02/21/re-examining-the-four-factors-the-case-for-free-throws-made-per-100-possessions/
   var team1FreeThrowRate = (team1.free_throws_made / team1Possessions);
   var team2FreeThrowRate = (team2.free_throws_made / team2Possessions);
-  // set teams turnover rate                    counts for (15%)
+  // set teams turnover rate                    counts for (35%)
   var team1TurnoverRate = (team1.turnovers / team1Possessions);
   var team2TurnoverRate = (team2.turnovers / team2Possessions);
-  // set teams rebounding rate                  counts for (25%)
+  // set teams rebounding rate                  counts for (15%)
   var team1ReboundRate = (team1.off_reb / (team1.off_reb+team2.def_reb));
   var team2ReboundRate = (team2.off_reb / (team2.off_reb+team1.def_reb));
 
@@ -56,10 +56,10 @@ function (game, team1, team2) {
   var team1FourFactors = ( team1effShootingPercentage * .3 ) + ( team1FreeThrowRate * .2 ) + ( team1ReboundRate * .35 ) - ( team1TurnoverRate * .15 ) * .15;
   var team2FourFactors = ( team2effShootingPercentage * .3 ) + ( team2FreeThrowRate * .2 ) + ( team2ReboundRate * .35 ) - ( team2TurnoverRate * .15 ) * .15;
 
-  // absolute value of the difference in points per possession for 20% for higher and 10% for fewer
+  // absolute value of the difference in points per possession for 25% for higher and 18.75% for fewer
   var offense = Math.abs( team1PointsPerPossession - team2PointsPerPossession ) / 30 * .25;
 
-  // some odd defensive calculation with assist for 30%!
+  // some odd defensive calculation with assist for 25%!
   var team1defense = ( ( team1.steals_per_game + team1.blocks_per_game + team1.assists_per_game - 2 ) / 20 ) * .25;
   var team2defense = ( ( team2.steals_per_game + team2.blocks_per_game + team2.assists_per_game - 2 ) / 20 ) * .25;
 
